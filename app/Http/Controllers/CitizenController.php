@@ -10,7 +10,7 @@ class CitizenController extends Controller
 {
     public function index()
     {
-        $citizens = Citizen::withCount('requests')->latest()->paginate(10);
+        $citizens = Citizen::withCount('complaints')->latest()->paginate(10);
 
         return view('citizens.index', compact('citizens'));
     }
@@ -38,7 +38,7 @@ class CitizenController extends Controller
      */
     public function show(Citizen $citizen)
     {
-        $citizen->load(['requests.service', 'notifications']);
+        $citizen->load(['complaints.category', 'notifications']);
 
         return view('citizens.show', compact('citizen'));
     }
@@ -66,7 +66,7 @@ class CitizenController extends Controller
      */
     public function destroy(Citizen $citizen)
     {
-        if ($citizen->requests()->exists()) {
+        if ($citizen->complaints()->exists()) {
             return back()->with('error', __('app.flash.citizen_has_requests'));
         }
         $citizen->delete();

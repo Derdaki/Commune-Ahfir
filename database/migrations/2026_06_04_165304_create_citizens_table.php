@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('citizens', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->unique()->constrained()->nullOnDelete();
             $table->string('cin')->unique();
             $table->string('first_name');
             $table->string('last_name');

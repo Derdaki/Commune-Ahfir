@@ -23,4 +23,9 @@ class MunicipalService extends Model
     {
         return $this->hasMany(AdministrativeRequest::class);
     }
+
+    public function complaints(): HasMany
+    {
+        return $this->hasMany(Complaint::class);
+    }
 }

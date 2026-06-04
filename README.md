@@ -1,14 +1,17 @@
-# Portail de gestion - Commune d'Ahfir
+# Portail de gestion des réclamations - Commune d'Ahfir
 
-Application Laravel 12 / Bootstrap 5 destinée à la gestion administrative de la Commune d'Ahfir.
+Application Laravel 12 / Bootstrap 5 destinée à la gestion multilingue des réclamations citoyennes de la Commune d'Ahfir.
 
 ## Fonctionnalités
 
 - Authentification sécurisée et gestion des rôles `admin` / `agent`
-- Gestion des citoyens, employés et services communaux
-- Gestion et suivi des demandes administratives
-- Notifications automatiques lors du dépôt et du changement d'état
-- Tableau de bord avec statistiques et graphique Chart.js
+- Dépôt et suivi sécurisé des réclamations citoyennes
+- Attribution aux services et employés communaux
+- Historique complet et notifications automatiques
+- Recherche avancée par date, catégorie, statut et service
+- Exports PDF et Excel
+- Tableau de bord détaillé avec graphiques Chart.js
+- Français, anglais, arabe et mode RTL
 - Validation serveur, messages d'erreur et contraintes relationnelles
 - Interface responsive Bootstrap 5
 
@@ -47,7 +50,8 @@ Pour utiliser directement Apache, configurer un VirtualHost dont le `DocumentRoo
 ## Connexion de démonstration
 
 - Administrateur : `admin@ahfir.ma` / `password`
-- Agent : `agent@ahfir.ma` / `password`
+- Employé : `agent@ahfir.ma` / `password`
+- Citoyen : `citoyen@ahfir.ma` / `password`
 
 Changer ces mots de passe avant toute utilisation au-delà du développement local.
 

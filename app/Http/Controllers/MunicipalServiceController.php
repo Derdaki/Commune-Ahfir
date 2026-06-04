@@ -13,7 +13,7 @@ class MunicipalServiceController extends Controller
      */
     public function index()
     {
-        $services = MunicipalService::withCount(['employees', 'requests'])->orderBy('name')->paginate(10);
+        $services = MunicipalService::withCount(['employees', 'complaints'])->orderBy('name')->paginate(10);
 
         return view('services.index', compact('services'));
     }
@@ -67,7 +67,7 @@ class MunicipalServiceController extends Controller
      */
     public function destroy(MunicipalService $municipalService)
     {
-        if ($municipalService->employees()->exists() || $municipalService->requests()->exists()) {
+        if ($municipalService->employees()->exists() || $municipalService->complaints()->exists()) {
             return back()->with('error', __('app.flash.service_in_use'));
         }
         $municipalService->delete();

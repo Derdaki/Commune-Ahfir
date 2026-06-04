@@ -15,7 +15,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $data = $request->validate(['role' => ['required', Rule::in(['admin', 'agent'])]]);
+        $data = $request->validate(['role' => ['required', Rule::in(['admin', 'employee', 'citizen'])]]);
         abort_if($user->is($request->user()) && $data['role'] !== 'admin', 422, __('app.flash.self_role'));
         $user->update($data);
 

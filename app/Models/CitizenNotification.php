@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CitizenNotification extends Model
 {
-    protected $fillable = ['citizen_id', 'administrative_request_id', 'title', 'message', 'read_at'];
+    protected $fillable = ['citizen_id', 'administrative_request_id', 'complaint_id', 'title', 'message', 'read_at'];
 
     protected function casts(): array
     {
@@ -22,5 +22,10 @@ class CitizenNotification extends Model
     public function request(): BelongsTo
     {
         return $this->belongsTo(AdministrativeRequest::class, 'administrative_request_id');
+    }
+
+    public function complaint(): BelongsTo
+    {
+        return $this->belongsTo(Complaint::class);
     }
 }

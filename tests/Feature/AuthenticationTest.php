@@ -22,7 +22,7 @@ class AuthenticationTest extends TestCase
         $this->actingAs($admin)->get('/dashboard')->assertOk();
     }
 
-    public function test_guest_can_register_an_agent_account(): void
+    public function test_guest_can_register_a_citizen_account(): void
     {
         $response = $this->post('/inscription', [
             'name' => 'New Agent',
@@ -33,7 +33,8 @@ class AuthenticationTest extends TestCase
 
         $response->assertRedirect('/dashboard');
         $this->assertAuthenticated();
-        $this->assertDatabaseHas('users', ['email' => 'new.agent@example.com', 'role' => 'agent']);
+        $this->assertDatabaseHas('users', ['email' => 'new.agent@example.com', 'role' => 'citizen']);
+        $this->assertDatabaseHas('citizens', ['email' => 'new.agent@example.com']);
     }
 
     public function test_locale_can_be_changed_to_arabic(): void

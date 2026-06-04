@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdministrativeRequest;
-use App\Models\Citizen;
-use App\Models\Employee;
-use App\Models\MunicipalService;
+use App\Models\Complaint;
+use App\Models\ComplaintCategory;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $statusCounts = AdministrativeRequest::query()
-            ->selectRaw('status, count(*) as total')
-            ->groupBy('status')
-            ->pluck('total', 'status');
+        $query = Complaint::query();
+        if ($request->user()->role === 'citizen') {
+            $query->where('citizen_id', $request->user()->citizen?->id);
+        }
+        $statusCounts = (clone $query)->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total', 'status');
+        $categoryCounts = ComplaintCategory::withCount(['complaints' => fn ($q) => $request->user()->role === 'citizen' ? $q->where('citizen_id', $request->user()->citizen?->id) : $q])->get();
 
         return view('dashboard', [
-            'citizenCount' => Citizen::count(),
-            'employeeCount' => Employee::where('active', true)->count(),
-            'serviceCount' => MunicipalService::where('active', true)->count(),
-            'requestCount' => AdministrativeRequest::count(),
+            'complaintCount' => (clone $query)->count(),
+            'resolvedCount' => (clone $query)->where('status', 'resolved')->count(),
+            'processingCount' => (clone $query)->where('status', 'processing')->count(),
+            'urgentCount' => (clone $query)->where('priority', 'urgent')->count(),
             'statusCounts' => $statusCounts,
-            'recentRequests' => AdministrativeRequest::with(['citizen', 'service'])->latest('submitted_at')->take(6)->get(),
+            'categoryCounts' => $categoryCounts,
+            'recentComplaints' => (clone $query)->with(['citizen', 'category', 'service'])->latest()->take(6)->get(),
         ]);
     }
 }

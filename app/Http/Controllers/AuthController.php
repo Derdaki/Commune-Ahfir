@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Citizen;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +48,17 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role' => 'agent',
+            'role' => 'citizen',
             'password' => Hash::make($data['password']),
+        ]);
+
+        [$firstName, $lastName] = array_pad(explode(' ', $data['name'], 2), 2, '');
+        Citizen::create([
+            'user_id' => $user->id,
+            'cin' => 'WEB-'.$user->id,
+            'first_name' => $firstName,
+            'last_name' => $lastName ?: '-',
+            'email' => $user->email,
         ]);
 
         Auth::login($user);
